@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 
 /**
@@ -18,9 +20,6 @@ public class GameWindow extends Fragment implements View.OnTouchListener{
 
     private float lastPosX;
     private float lastPosY;
-
-    private float DistX;
-    private float DistY;
 
     private View window;
     private int windowWidth;
@@ -55,7 +54,12 @@ public class GameWindow extends Fragment implements View.OnTouchListener{
                 windowTop = coords[1];
             }
         });
-        getView().findViewById(R.id.envelopeView).setOnTouchListener(this);
+        for(int i =0; i<2; i++) {
+            ImageView testEnv = new ImageView(getContext());
+            testEnv.setImageResource(R.drawable.envelope);
+            ((RelativeLayout) view).addView(testEnv);
+            testEnv.setOnTouchListener(this);
+        }
     }
 
 
@@ -79,14 +83,14 @@ public class GameWindow extends Fragment implements View.OnTouchListener{
                 final float y = event.getRawY();
 
                 if ((v.getX() + v.getWidth() < windowWidth && v.getX()>0) || (x < windowLeft + windowWidth && x > windowLeft + v.getWidth())) {
-                    DistX = x - lastPosX;
-                    v.setX(v.getX() + DistX);
+                    float distX = x - lastPosX;
+                    v.setX(v.getX() + distX);
                     lastPosX = x;
                 }
 
                 if ((v.getY() + v.getHeight() < windowHeight && v.getY()>0) || (y < windowTop + windowHeight && y > windowTop +v.getHeight())){
-                    DistY = y - lastPosY;
-                    v.setY(v.getY() + DistY);
+                    float distY = y - lastPosY;
+                    v.setY(v.getY() + distY);
                     lastPosY = y;
                 }
                 break;
