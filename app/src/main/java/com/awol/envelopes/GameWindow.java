@@ -22,6 +22,7 @@ public class GameWindow extends Fragment implements View.OnTouchListener{
     private float lastPosY;
 
     private View window;
+    private RelativeLayout layout;
     private int windowWidth;
     private int windowHeight;
     private int windowTop;
@@ -43,6 +44,7 @@ public class GameWindow extends Fragment implements View.OnTouchListener{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         window = getView().findViewById(R.id.windowView);
+        layout = (RelativeLayout) view;
         window.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -54,17 +56,21 @@ public class GameWindow extends Fragment implements View.OnTouchListener{
                 windowTop = coords[1];
             }
         });
-        for(int i =0; i<2; i++) {
-            ImageView testEnv = new ImageView(getContext());
-            testEnv.setImageResource(R.drawable.envelope);
-            ((RelativeLayout) view).addView(testEnv);
-            testEnv.setOnTouchListener(this);
-        }
+
     }
 
-
+    // Public method to add envelopes to a GameWindow
+    public void addEnvelope(float x, float y) {
+        ImageView newEnv = new ImageView(getContext());
+        newEnv.setImageResource(R.drawable.envelope);
+        layout.addView(newEnv);
+        newEnv.setX(x);
+        newEnv.setY(y);
+        newEnv.setOnTouchListener(this);
+    }
 
     @Override
+    // onTouch method applied to envelope objects within this window
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
